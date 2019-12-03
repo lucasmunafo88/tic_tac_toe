@@ -1,29 +1,46 @@
 from os import system
 import numpy as np
 
-class tablero(object):
+from collections import Counter
 
-    POSICIONES_VALIDAS = ["A1","A2","A3","B1","B2","B3","C1","C2","C3"]
+class Tablero(object):
+
+    # La existencia de estos dos diccionarios haciendo referencia a las mismas celdas se debe
+    # a que es mas sencillo de verificar su existencia y bloquearlas en caso de que esten ocupadas.
+    POSICIONES_VALIDAS = {"A1":(0,0),"A2":(1,0),"A3":(2,0),"B1":(0,1),"B2":(1,1),"B3":(2,1),"C1":(0,2),"C2":(1,2),"C3":(2,2)}
+    POSICIONES_VALIDAS_PC = {(0,0):"A1",(1,0):"A2",(2,0):"A3",(0,1):"B1",(1,1):"B2",(2,1):"B3",(0,2):"C1",(1,2):"C2",(2,2):"C3"}
     posiciones_tablero = np.array((4,4))
 
     def __init__(self):
         """
-        Constructor del tablero. Se genera el tablero con las posiciones vacias ('-'). Al mismo tiempo que se genera el tablero se lo dibuja.
+        Constructor del tablero. Se genera el tablero con las posiciones vacias ('-'). Al mismo tiempo que se genera se lo dibuja.
         """
+        # Trabajo con numpy por una cuestion de que es mas sencillo para realizar ciertas
+        # operaciones como la diagonal, la diagonal secundaria, etc...
         self.posiciones_tablero = np.array([
-            [" ","A","B","C"],
-            ["1","-","-","-"],
-            ["2","-","-","-"],
-            ["3","-","-","-"]
+            ["-","-","-"],
+            ["-","-","-"],
+            ["-","-","-"]
         ])
         self.dibujar_tablero()
 
     def dibujar_tablero(self):
         """
-        Funcion que dibuja el tablero. A partir de la lista de posiciones el mismo redibuja el tablero.
+        A partir de la lista de posiciones redibuja el tablero. A la matriz de datos se le appendea los indicadores
+        de columnas y filas.
         """
         _ = system('clear')
-        for fila in self.posiciones_tablero:
+        coordenadas_numericas = np.array([
+            ["1"],
+            ["2"],
+            ["3"]
+        ])
+        coordenadas_alfanumericas = np.array([
+            [" ","A","B","C"]
+        ])
+        tablero_coordenadas = np.append(coordenadas_numericas, self.posiciones_tablero, axis=1)
+        tablero_coordenadas = np.append(coordenadas_alfanumericas, tablero_coordenadas, axis=0)
+        for fila in tablero_coordenadas:
             for columna in fila:
                 print("| " + columna + " |", end="")
 
@@ -35,21 +52,14 @@ class tablero(object):
             print("")
         return
 
-    def insertar_posicion(self, simbolo):
+    def insertar_posicion(self, simbolo, coordenadas):
         """
         Inserta en una posicion valida no ocupada, el simbolo correspondiente (pasado como parametro, permitiendo de esta forma jugar un PVP).
         """
-        fila = 0
-        columna = 0
-        posicion = input("Ingresa la posicion donde queres jugar...").upper()
-        fila = int(posicion[1])
-        columna = (self.POSICIONES_VALIDAS.index(posicion) // 3) + 1
-        while posicion not in self.POSICIONES_VALIDAS or self.posiciones_tablero[fila][columna] != "-":
-            self.dibujar_tablero()
-            posicion = input("Posicion inexistente o ya utilizada, porfavor reingresa la posicion donde queres jugar...").upper()
-            fila = int(posicion[1])
-            columna = (self.POSICIONES_VALIDAS.index(posicion) // 3) + 1
-
+        fila = coordenadas[0]
+        columna = coordenadas[1]
+        # HAGO UN POP A LAS POSICIONES VALIDAS PARA VERIFICAR DE FORMA MAS SENCILLA
+        self.POSICIONES_VALIDAS.pop(self.POSICIONES_VALIDAS_PC[coordenadas]) 
         self.posiciones_tablero[fila][columna] = simbolo
         self.dibujar_tablero()
         return
@@ -60,7 +70,7 @@ class tablero(object):
         """
         # PARA LLEVARSE LA VICTORIA TODA UNA LINEA TIENE QUE SER O BIEN 'X' o 'O'
         # SABIENDO ESTO SE PUEDE HACER UN SET Y COMPROBAR QUE EL UNICO ELEMENTO QUE TENGA SEA UNO DE LOS SIMBOLOS
-        # PRIMERO VERIFICO LAS DIAGONALES
+        # PRIMERO VERIFICO LAS DIAGONALES YA QUE SON MAS FACILES DE VERIFICAR
         diagonal_principal = set(np.diag(self.posiciones_tablero))
         diagonal_secundaria = set(np.diag(np.fliplr(self.posiciones_tablero)))
         if diagonal_principal in [{'X'}, {'O'}]:
@@ -68,11 +78,17 @@ class tablero(object):
         elif diagonal_secundaria in [{'X'}, {'O'}]:
             return diagonal_secundaria.pop()
         # LUEGO VERIFICO LAS HORIZONTALES Y VERTICALES
-        for i in range(1,4):
-            vertical = set(self.posiciones_tablero[i][1:])
-            horizontal = set(self.posiciones_tablero[1:,i])
-            if vertical in [{'X'}, {'O'}]:
-                return vertical.pop()
-            elif horizontal in [{'X', {'O'}]:
+        for i in range(3):
+            horizontal = set(self.posiciones_tablero[i][:])
+            vertical = set(self.posiciones_tablero[:,i])
+            if horizontal in [{'X'}, {'O'}]:
                 return horizontal.pop()
+            elif vertical in [{'X'}, {'O'}]:
+                return vertical.pop()
         return None
+
+    def get_tablero(self):
+        """
+        Getter del tablero. Facilita el conocimiento para pc y persona de la ubicacion de los simbolos.
+        """
+        return self.posiciones_tablero
