@@ -4,15 +4,15 @@ class tic_tac_toe(object):
     def comenzar_partida(self):
         partida = tablero()
 
-        a.insertar_posicion()
-        a.verificar_tablero()
-        a.insertar_posicion()
-        a.verificar_tablero()
-        a.insertar_posicion()
-        a.verificar_tablero()
+        partida.insertar_posicion('X')
+        partida.verificar_tablero()
+        partida.insertar_posicion('X')
+        partida.verificar_tablero()
+        partida.insertar_posicion('X')
+        partida.verificar_tablero()
 
-        movimientos = range(9)
-        for turno in movimientos:
+        # movimientos = range(9)
+        # for turno in movimientos:
                         
 
     def victoria(self, player):

@@ -58,17 +58,21 @@ class tablero(object):
         """
         Verifica si alguno de los dos jugadores se llevo la victoria.
         """
+        # PARA LLEVARSE LA VICTORIA TODA UNA LINEA TIENE QUE SER O BIEN 'X' o 'O'
+        # SABIENDO ESTO SE PUEDE HACER UN SET Y COMPROBAR QUE EL UNICO ELEMENTO QUE TENGA SEA UNO DE LOS SIMBOLOS
+        # PRIMERO VERIFICO LAS DIAGONALES
         diagonal_principal = set(np.diag(self.posiciones_tablero))
         diagonal_secundaria = set(np.diag(np.fliplr(self.posiciones_tablero)))
-        if diagonal_principal == {'X'} or diagonal_secundaria == {'X'}:
-            return 'X'
-        elif diagonal_principal == {'O'} or diagonal_secundaria == {'O'}:
-            return 'O'
+        if diagonal_principal in [{'X'}, {'O'}]:
+            return diagonal_principal.pop()
+        elif diagonal_secundaria in [{'X'}, {'O'}]:
+            return diagonal_secundaria.pop()
+        # LUEGO VERIFICO LAS HORIZONTALES Y VERTICALES
         for i in range(1,4):
             vertical = set(self.posiciones_tablero[i][1:])
             horizontal = set(self.posiciones_tablero[1:,i])
-            if vertical == {'X'} or horizontal == {'X'}:
-                return 'X'
-            elif vertical == {'O'} or horizontal == {'O'}:
-                return 'O'
+            if vertical in [{'X'}, {'O'}]:
+                return vertical.pop()
+            elif horizontal in [{'X', {'O'}]:
+                return horizontal.pop()
         return None
