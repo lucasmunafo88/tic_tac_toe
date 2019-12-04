@@ -61,6 +61,7 @@ class Pc(object):
                 indice = ((np.where(vertical == '-'))[0][0])
                 return (indice, i)
 
+        # Esta la idea de incorporar premoves o tacticas, en vez de un unico movimiento
         index = list(zip(*np.where(tablero == '-')))[0]
         return index
 

@@ -50,6 +50,14 @@ class Tic_tac_toe(object):
         self.jugador_uno = Persona("X")
         self.jugador_dos = Persona("O")
         return
+    
+    def definir_jugadores_CVC(self):
+        """
+        Para jugar partidas Computer vs Computer.
+        """
+        self.jugador_uno = Pc("X")
+        self.jugador_dos = Pc("O")
+        return
 
     def primer_turno(self):
         """
