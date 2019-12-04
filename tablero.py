@@ -7,8 +7,8 @@ class Tablero(object):
 
     # La existencia de estos dos diccionarios haciendo referencia a las mismas celdas se debe
     # a que es mas sencillo de verificar su existencia y bloquearlas en caso de que esten ocupadas.
-    POSICIONES_VALIDAS = {"A1":(0,0),"A2":(1,0),"A3":(2,0),"B1":(0,1),"B2":(1,1),"B3":(2,1),"C1":(0,2),"C2":(1,2),"C3":(2,2)}
-    POSICIONES_VALIDAS_PC = {(0,0):"A1",(1,0):"A2",(2,0):"A3",(0,1):"B1",(1,1):"B2",(2,1):"B3",(0,2):"C1",(1,2):"C2",(2,2):"C3"}
+    posiciones_validas = dict()
+    posiciones_validas_pc = dict()
     posiciones_tablero = np.array((4,4))
 
     def __init__(self):
@@ -17,6 +17,8 @@ class Tablero(object):
         """
         # Trabajo con numpy por una cuestion de que es mas sencillo para realizar ciertas
         # operaciones como la diagonal, la diagonal secundaria, etc...
+        self.posiciones_validas = {"A1":(0,0),"A2":(1,0),"A3":(2,0),"B1":(0,1),"B2":(1,1),"B3":(2,1),"C1":(0,2),"C2":(1,2),"C3":(2,2)}
+        self.posiciones_validas_pc = {(0,0):"A1",(1,0):"A2",(2,0):"A3",(0,1):"B1",(1,1):"B2",(2,1):"B3",(0,2):"C1",(1,2):"C2",(2,2):"C3"}
         self.posiciones_tablero = np.array([
             ["-","-","-"],
             ["-","-","-"],
@@ -59,7 +61,7 @@ class Tablero(object):
         fila = coordenadas[0]
         columna = coordenadas[1]
         # HAGO UN POP A LAS POSICIONES VALIDAS PARA VERIFICAR DE FORMA MAS SENCILLA
-        self.POSICIONES_VALIDAS.pop(self.POSICIONES_VALIDAS_PC[coordenadas]) 
+        self.posiciones_validas.pop(self.posiciones_validas_pc[coordenadas]) 
         self.posiciones_tablero[fila][columna] = simbolo
         self.dibujar_tablero()
         return
@@ -92,3 +94,10 @@ class Tablero(object):
         Getter del tablero. Facilita el conocimiento para pc y persona de la ubicacion de los simbolos.
         """
         return self.posiciones_tablero
+
+    def set_tablero(self, tablero_nuevo):
+        """
+        Esta funcion es utilizada para poder realizar los tests.
+        """
+        self.posiciones_tablero = tablero_nuevo
+        return

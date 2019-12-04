@@ -8,9 +8,9 @@ class Test_persona(object):
 
     def test_get_simbolo(self):
         persona = Persona("X")
-        expected = "X"
-        received = persona.get_simbolo("X")
-        assert received == expected, "persona.get_simbolo() no devuelve el simbolo esperado"
+        simbolo_esperado = "X"
+        simbolo_recibido = persona.get_simbolo("X")
+        assert simbolo_recibido == simbolo_esperado, "persona.get_simbolo() no devuelve el simbolo esperado"
         print("SUCCEEDED persona.get_simbolo()")
 
     def test_insertar_posicion(self):
