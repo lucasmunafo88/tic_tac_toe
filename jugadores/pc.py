@@ -1,8 +1,9 @@
 from collections import Counter
 import numpy as np
 
+
 class Pc(object):
-    
+
     simbolo = "-"
 
     def __init__(self, simbolo):
@@ -18,10 +19,10 @@ class Pc(object):
         # En caso de que en una linea se encuentren dos simbolos iguales y un espacio libre significa
         # que o es una amenaza o una posible victoria, por lo que estamos obligados a ocupar esa casilla.
         if "O" in counter:
-            if counter["O"] == 2 and '-' in counter:
+            if counter["O"] == 2 and "-" in counter:
                 return True
         elif "X" in counter:
-            if counter["X"] == 2 and '-' in counter:
+            if counter["X"] == 2 and "-" in counter:
                 return True
         return False
 
@@ -37,32 +38,32 @@ class Pc(object):
         tablero = tablero.get_tablero()
         counter_diagonal_principal = Counter(np.diag(tablero))
         counter_diagonal_secundaria = Counter(np.diag(np.fliplr(tablero)))
-        
+
         diagonal_principal = np.diag(tablero)
         diagonal_secundaria = np.diag(np.fliplr(tablero))
 
         if self.__verificar_posiciones(counter_diagonal_principal):
-            indice = ((np.where(diagonal_principal == '-'))[0][0])
+            indice = (np.where(diagonal_principal == "-"))[0][0]
             return (indice, indice)
         if self.__verificar_posiciones(counter_diagonal_secundaria):
-            indice = (np.where(diagonal_secundaria == '-'))[0][0]
-            return (indice, [2,1,0][indice])
+            indice = (np.where(diagonal_secundaria == "-"))[0][0]
+            return (indice, [2, 1, 0][indice])
 
         # Verificamos las horizontales y verticales al mismo tiempo
         for i in range(3):
             counter_horizontal = Counter(tablero[i][:])
-            counter_vertical = Counter(tablero[:,i])            
+            counter_vertical = Counter(tablero[:, i])
             horizontal = tablero[i][:]
-            vertical = tablero[:,i]
+            vertical = tablero[:, i]
             if self.__verificar_posiciones(counter_horizontal):
-                indice = ((np.where(horizontal == '-'))[0][0])
+                indice = (np.where(horizontal == "-"))[0][0]
                 return (i, indice)
             if self.__verificar_posiciones(counter_vertical):
-                indice = ((np.where(vertical == '-'))[0][0])
+                indice = (np.where(vertical == "-"))[0][0]
                 return (indice, i)
 
         # Esta la idea de incorporar premoves o tacticas, en vez de un unico movimiento
-        index = list(zip(*np.where(tablero == '-')))[0]
+        index = list(zip(*np.where(tablero == "-")))[0]
         return index
 
     def get_simbolo(self):

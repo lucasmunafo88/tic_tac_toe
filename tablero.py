@@ -3,13 +3,14 @@ import numpy as np
 
 from collections import Counter
 
+
 class Tablero(object):
 
     # La existencia de estos dos diccionarios haciendo referencia a las mismas celdas se debe
     # a que es mas sencillo de verificar su existencia y bloquearlas en caso de que esten ocupadas.
     posiciones_validas = dict()
     posiciones_validas_pc = dict()
-    posiciones_tablero = np.array((4,4))
+    posiciones_tablero = np.array((4, 4))
 
     def __init__(self):
         """
@@ -17,13 +18,31 @@ class Tablero(object):
         """
         # Trabajo con numpy por una cuestion de que es mas sencillo para realizar ciertas
         # operaciones como la diagonal, la diagonal secundaria, etc...
-        self.posiciones_validas = {"A1":(0,0),"A2":(1,0),"A3":(2,0),"B1":(0,1),"B2":(1,1),"B3":(2,1),"C1":(0,2),"C2":(1,2),"C3":(2,2)}
-        self.posiciones_validas_pc = {(0,0):"A1",(1,0):"A2",(2,0):"A3",(0,1):"B1",(1,1):"B2",(2,1):"B3",(0,2):"C1",(1,2):"C2",(2,2):"C3"}
-        self.posiciones_tablero = np.array([
-            ["-","-","-"],
-            ["-","-","-"],
-            ["-","-","-"]
-        ])
+        self.posiciones_validas = {
+            "A1": (0, 0),
+            "A2": (1, 0),
+            "A3": (2, 0),
+            "B1": (0, 1),
+            "B2": (1, 1),
+            "B3": (2, 1),
+            "C1": (0, 2),
+            "C2": (1, 2),
+            "C3": (2, 2),
+        }
+        self.posiciones_validas_pc = {
+            (0, 0): "A1",
+            (1, 0): "A2",
+            (2, 0): "A3",
+            (0, 1): "B1",
+            (1, 1): "B2",
+            (2, 1): "B3",
+            (0, 2): "C1",
+            (1, 2): "C2",
+            (2, 2): "C3",
+        }
+        self.posiciones_tablero = np.array(
+            [["-", "-", "-"], ["-", "-", "-"], ["-", "-", "-"]]
+        )
         self.dibujar_tablero()
 
     def dibujar_tablero(self):
@@ -31,22 +50,20 @@ class Tablero(object):
         A partir de la lista de posiciones redibuja el tablero. A la matriz de datos se le appendea los indicadores
         de columnas y filas.
         """
-        _ = system('clear')
-        coordenadas_numericas = np.array([
-            ["1"],
-            ["2"],
-            ["3"]
-        ])
-        coordenadas_alfanumericas = np.array([
-            [" ","A","B","C"]
-        ])
-        tablero_coordenadas = np.append(coordenadas_numericas, self.posiciones_tablero, axis=1)
-        tablero_coordenadas = np.append(coordenadas_alfanumericas, tablero_coordenadas, axis=0)
+        _ = system("clear")
+        coordenadas_numericas = np.array([["1"], ["2"], ["3"]])
+        coordenadas_alfanumericas = np.array([[" ", "A", "B", "C"]])
+        tablero_coordenadas = np.append(
+            coordenadas_numericas, self.posiciones_tablero, axis=1
+        )
+        tablero_coordenadas = np.append(
+            coordenadas_alfanumericas, tablero_coordenadas, axis=0
+        )
         for fila in tablero_coordenadas:
             for columna in fila:
                 print("| " + columna + " |", end="")
 
-            # ME PARECIO INTERESATE UTILIZAR LO QUE ALEJANDRO ME HABIA COMENTADO EN LA ENTREVISTA, SIN EMBARGO 
+            # ME PARECIO INTERESATE UTILIZAR LO QUE ALEJANDRO ME HABIA COMENTADO EN LA ENTREVISTA, SIN EMBARGO
             # CREO QUE SERIA MEJOR REALIZAR UN PRINT LUEGO DE LA SEGUNDA ITERACION
             # else:
             #     print("")
@@ -61,7 +78,7 @@ class Tablero(object):
         fila = coordenadas[0]
         columna = coordenadas[1]
         # HAGO UN POP A LAS POSICIONES VALIDAS PARA VERIFICAR DE FORMA MAS SENCILLA
-        self.posiciones_validas.pop(self.posiciones_validas_pc[coordenadas]) 
+        self.posiciones_validas.pop(self.posiciones_validas_pc[coordenadas])
         self.posiciones_tablero[fila][columna] = simbolo
         self.dibujar_tablero()
         return
@@ -75,17 +92,17 @@ class Tablero(object):
         # PRIMERO VERIFICO LAS DIAGONALES YA QUE SON MAS FACILES DE VERIFICAR
         diagonal_principal = set(np.diag(self.posiciones_tablero))
         diagonal_secundaria = set(np.diag(np.fliplr(self.posiciones_tablero)))
-        if diagonal_principal in [{'X'}, {'O'}]:
+        if diagonal_principal in [{"X"}, {"O"}]:
             return diagonal_principal.pop()
-        elif diagonal_secundaria in [{'X'}, {'O'}]:
+        elif diagonal_secundaria in [{"X"}, {"O"}]:
             return diagonal_secundaria.pop()
         # LUEGO VERIFICO LAS HORIZONTALES Y VERTICALES
         for i in range(3):
             horizontal = set(self.posiciones_tablero[i][:])
-            vertical = set(self.posiciones_tablero[:,i])
-            if horizontal in [{'X'}, {'O'}]:
+            vertical = set(self.posiciones_tablero[:, i])
+            if horizontal in [{"X"}, {"O"}]:
                 return horizontal.pop()
-            elif vertical in [{'X'}, {'O'}]:
+            elif vertical in [{"X"}, {"O"}]:
                 return vertical.pop()
         return None
 
