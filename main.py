@@ -8,6 +8,12 @@ from jugadores.pc import Pc
 
 class Tic_tac_toe(object):
 
+    COLOR_VIOLETA = '\033[95m'
+    COLOR_VERDE = '\033[92m'
+    COLOR_COLORADO = '\033[91m'
+    COLOR_END = '\033[0m'
+    COLOR_AZUL = '\033[94m'
+
     def comenzar_partida(self):
         """
         Comenzar partida declara los jugadores, quien comienza el turno, y da comienzo a la partida.
@@ -31,7 +37,7 @@ class Tic_tac_toe(object):
                 try:
                     partida.insertar_posicion(jugador.get_simbolo(), jugador.insertar_posicion(partida))
                 except KeyboardInterrupt:
-                    input("\nPerdiste por abandono!\nPresiona enter para salir...")
+                    input( self.COLOR_COLORADO + "\nPerdiste por abandono!\nPresiona enter para salir..." + self.COLOR_END)
                     sys.exit()
                 ganador = partida.verificar_tablero()
                 if ganador is not None:
@@ -41,7 +47,7 @@ class Tic_tac_toe(object):
                 continue
             break
         else:
-            print("\nNo hay mas movimientos posibles! :c")
+            print(self.COLOR_COLORADO + "\nNo hay mas movimientos posibles! :c" + self.COLOR_END)
         return
 
     # ME PARECIO APROPIADO HACER "PRIVADOS" ESTOS METODOS PERO PARA REALIZAR LOS TEST
@@ -84,29 +90,29 @@ class Tic_tac_toe(object):
         """
         Define quien es el ganador de la partida.
         """
-        return ("El jugador {} ha ganado!!").format(player)
+        return (self.COLOR_AZUL + "El jugador {} ha ganado!!" + self.COLOR_END).format(player)
 
     def mostrar_menu(self):
         """
         Muestra el menu para seleccionar el tipo de juego
         """
         _ = system('clear')
-        seleccion = input("""        Ingresa el modo de juego que queres jugar...
+        seleccion = input(self.COLOR_VIOLETA + "        Ingresa el modo de juego que queres jugar..."  + self.COLOR_VERDE + """
 
             > 1.     Jugador vs Jugador     <
             > 2.   Jugador vs Computadora   <
             > 3. Computadora vs Computadora <
 
-        Modo de juego: """)
+        """ + self.COLOR_VIOLETA + "Modo de juego: " + self.COLOR_END)
         while seleccion not in ["1","2","3"]:
             _ = system('clear')
-            seleccion = input("""        Ups! modo de juengo invalido...
+            seleccion = input(self.COLOR_VIOLETA + "        Ingresa el modo de juego que queres jugar..."  + self.COLOR_VERDE + """
 
             > 1.     Jugador vs Jugador     <
             > 2.   Jugador vs Computadora   <
             > 3. Computadora vs Computadora <
 
-        Modo de juego: """)
+        """ + self.COLOR_VIOLETA + "Modo de juego: " + self.COLOR_END)
         return seleccion
 
 
