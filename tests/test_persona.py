@@ -2,9 +2,8 @@ from jugadores.persona import Persona
 
 class Test_persona(object):
 
-    @classmethod
-    def correr_tests(cls):
-        cls.test_get_simbolo()
+    def correr_tests(self):
+        self.test_get_simbolo()
 
     def test_get_simbolo(self):
         persona = Persona("X")
@@ -17,6 +16,3 @@ class Test_persona(object):
         # Probablemente para testear el input sera necesario usar una libreria
         # de un framework
         pass
-
-if __name__ == "__main__":
-    Test_persona.correr_tests()

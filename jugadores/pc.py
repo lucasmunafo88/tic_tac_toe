@@ -11,7 +11,7 @@ class Pc(object):
         """
         self.simbolo = simbolo
 
-    def _verificar_posiciones(self, counter):
+    def __verificar_posiciones(self, counter):
         """
         Verifica si en cierta linea pasada como parametro existe una combinacion ganadora o peligrosa.
         """
@@ -41,10 +41,10 @@ class Pc(object):
         diagonal_principal = np.diag(tablero)
         diagonal_secundaria = np.diag(np.fliplr(tablero))
 
-        if self._verificar_posiciones(counter_diagonal_principal):
+        if self.__verificar_posiciones(counter_diagonal_principal):
             indice = ((np.where(diagonal_principal == '-'))[0][0])
             return (indice, indice)
-        if self._verificar_posiciones(counter_diagonal_secundaria):
+        if self.__verificar_posiciones(counter_diagonal_secundaria):
             indice = (np.where(diagonal_secundaria == '-'))[0][0]
             return (indice, [2,1,0][indice])
 
@@ -54,10 +54,10 @@ class Pc(object):
             counter_vertical = Counter(tablero[:,i])            
             horizontal = tablero[i][:]
             vertical = tablero[:,i]
-            if self._verificar_posiciones(counter_horizontal):
+            if self.__verificar_posiciones(counter_horizontal):
                 indice = ((np.where(horizontal == '-'))[0][0])
                 return (i, indice)
-            if self._verificar_posiciones(counter_vertical):
+            if self.__verificar_posiciones(counter_vertical):
                 indice = ((np.where(vertical == '-'))[0][0])
                 return (indice, i)
 

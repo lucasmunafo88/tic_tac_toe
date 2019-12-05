@@ -7,10 +7,10 @@ class Persona(object):
 
     def insertar_posicion(self, tablero):
         posicion = input("Ingresa la posicion donde queres jugar...").upper()
-        while posicion not in tablero.POSICIONES_VALIDAS:
+        while posicion not in tablero.posiciones_validas:
             tablero.dibujar_tablero()
             posicion = input("Posicion inexistente o ya utilizada, porfavor reingresa la posicion donde queres jugar...").upper()
-        return tablero.POSICIONES_VALIDAS[posicion]
+        return tablero.posiciones_validas[posicion]
 
     def get_simbolo(self):
         return self.simbolo

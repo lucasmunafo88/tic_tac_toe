@@ -14,10 +14,10 @@ class Test_pc (object):
         self.test_insertar_posicion_condicionada()
         self.test_get_simbolo()
         print("============================================")
-        print("Todas las pruebas fueron realizadas con exito")
+        print("Todas las pruebas PC fueron realizadas con exito")
         return
 
-    def _pc_insertar_movimiento(self, partida, pc):
+    def __pc_insertar_movimiento(self, partida, pc):
         """
         Inserta el movimiento de la pc en la instancia de tablero (o partida) pasado como parametro. 
         """
@@ -33,7 +33,7 @@ class Test_pc (object):
         # ningun simbolo.
         pc = Pc("O")
         tablero_vacio = Tablero()
-        self._pc_insertar_movimiento(tablero_vacio, pc)
+        self.__pc_insertar_movimiento(tablero_vacio, pc)
         tablero_recibido = tablero_vacio.get_tablero()
 
         posiciones_tablero = np.array([
@@ -47,8 +47,6 @@ class Test_pc (object):
 
         assert (tablero_recibido == tablero_esperado).all(), "pc.insertar_posicion() no inserta la posicion esperada"
         print("SUCCEEDED pc.insertar_posicion()")
-        sleep(0.5)
-
 
     def test_insertar_posicion_condicionada(self):
         """
@@ -115,10 +113,9 @@ class Test_pc (object):
                 else:
                     eval(codigo_insertar_recibido)
                     eval(codigo_insertar_esperado)
-                self._pc_insertar_movimiento(tablero_nuevo,pc)
+                self.__pc_insertar_movimiento(tablero_nuevo,pc)
                 assert (tablero_recibido == tablero_esperado).all(), "pc.insertar_posicion() ({} condicionada) no inserta la posicion esperada".format(nombre_test)
                 print("SUCCEEDED pc.insertar_posicion() ({} condicionada)".format(nombre_test))
-                sleep(0.5)
 
         pc = Pc("O")
 
@@ -137,6 +134,3 @@ class Test_pc (object):
         simbolo_recibido = pc.get_simbolo()
         assert simbolo_recibido == simbolo_esperado, "pc.get_simbolo() no devuelve el simbolo esperado"
         print("SUCCEEDED pc.get_simbolo()")
-
-if __name__ == "__main__": 
-    Test_pc.correr_tests()
